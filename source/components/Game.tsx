@@ -4,6 +4,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { Coordinate, Direction, GestureEventType } from '../types/types';
 import React from 'react';
 import Snake from './Snake';
+import { checkGameOver } from '../utils/checkGameOver';
 
 
 
@@ -35,6 +36,11 @@ export default function Game(): JSX.Element {
         const snakeHead = snake[0];
         const newHead = {...snakeHead}; //creating a copy
 
+        if(checkGameOver(snakeHead,GAME_BOUNDS)){
+            setIsGameOver((prev)=>!prev);
+            return;
+        }
+
         //Game Over
         switch(direction){
             case Direction.Top:
@@ -57,7 +63,7 @@ export default function Game(): JSX.Element {
         }
 
 
-        setSnake([newHead,...snake]);
+        setSnake([newHead,...snake.slice(0,-1)]);
 
 
     }
