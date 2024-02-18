@@ -22,6 +22,46 @@ export default function Game(): JSX.Element {
     const [isPaused, setIsPaused] = React.useState<boolean>(false);
 
 
+    React.useEffect(()=>{
+        if(!isGameOver){
+            const intervalId = setInterval(()=>{
+                !isPaused && moveSnake();
+            },MOVE_INTERVAL);
+            return () => clearInterval(intervalId);
+        }
+    },[snake,isGameOver,isPaused]);
+
+    const moveSnake = ()=>{
+        const snakeHead = snake[0];
+        const newHead = {...snakeHead}; //creating a copy
+
+        //Game Over
+        switch(direction){
+            case Direction.Top:
+                newHead.y -=1;
+            break;
+
+            case Direction.Down:
+                newHead.y +=1;
+                break;
+
+            case Direction.Left:
+                newHead.x -=1;
+                break;
+
+            case Direction.Right:
+                newHead.x +=1;
+                break;
+            default:
+                break;
+        }
+
+
+        setSnake([newHead,...snake]);
+
+
+    }
+
     const handleGesture = (event: GestureEventType) => {
         const { translationX, translationY } = event.nativeEvent;
         if (Math.abs(translationX) > Math.abs(translationY)) {
@@ -39,6 +79,7 @@ export default function Game(): JSX.Element {
         }
         console.log(event);
     };
+    
     return (
         <PanGestureHandler onGestureEvent={handleGesture}>
             <SafeAreaView style={styles.container}>
