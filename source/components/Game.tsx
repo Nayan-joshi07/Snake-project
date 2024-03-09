@@ -8,6 +8,7 @@ import { checkGameOver } from '../utils/checkGameOver';
 import Food from './Food';
 import { checkEatsFood } from './checkEatsFood';
 import { randomFoodPosition } from '../utils/randomFoodPosition';
+import Header from './Header';
 
 
 
@@ -91,10 +92,25 @@ export default function Game(): JSX.Element {
         }
         console.log(event);
     };
+
+    const reloadGame = ()=>{
+        setSnake(SNAKE_INITIAL_POSITION);
+        setFood(FOOD_INITIAL_POSITION);
+        setIsGameOver(false);
+        setScore(0);
+        setDirection(Direction.Right);
+setIsPaused(false);
+
+    }
+    
+    const pauseGame = ()=>{
+        setIsPaused(!isPaused);
+    }
     
     return (
         <PanGestureHandler onGestureEvent={handleGesture}>
             <SafeAreaView style={styles.container}>
+                <Header isPaused={isPaused , pauseGame={pauseGame} reloadGame = {}}/>
                 <View style={styles.boundaries}>
                     <Snake snake={snake} />
                     <Food x ={food.x}  y = {food.y}/>
